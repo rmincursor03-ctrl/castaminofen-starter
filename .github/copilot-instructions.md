@@ -2143,3 +2143,80 @@ Technical identifiers must remain in English:
 Never translate technical identifiers.
 
 Maintain professional technical communication in Persian.
+
+# Development Documentation Rule
+
+No phase is considered complete until its documentation file is updated.
+
+The repository documentation is part of the product.
+
+# 90. Changelog Maintenance Rule
+
+The changelog is mandatory documentation.
+
+After every code change, feature implementation, bug fix, refactoring, dependency change, configuration change, or architecture change:
+
+The AI MUST update:
+
+docs/development/changelog.md
+
+The changelog entry must include:
+
+- Date
+- Phase
+- Type of change
+- Summary
+- Files changed
+- Impact
+- Verification status
+
+Example:
+
+```md
+## 2026-07-16
+
+### Phase 1 - Authentication
+
+Type:
+Feature
+
+Changes:
+- Added JWT authentication flow
+- Added refresh token rotation
+- Added Prisma user authentication fields
+
+Files:
+- apps/api/src/auth/*
+- apps/api/src/users/*
+- prisma/schema.prisma
+
+Verification:
+- TypeScript build passed
+- Prisma migration completed
+
+# 92. Task Completion Checklist
+
+A task is NOT complete until:
+
+✅ Code changes are implemented
+
+✅ TypeScript passes
+
+✅ Lint passes
+
+✅ Documentation is updated
+
+✅ Changelog is updated
+
+✅ Commit message is prepared
+
+✅ Final summary is provided
+
+The AI must always provide:
+
+1. Persian summary
+2. Changed files list
+3. Changelog update
+4. Recommended commit message
+
+before stopping.
