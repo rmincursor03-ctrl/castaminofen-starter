@@ -2757,3 +2757,5 @@ Audit reports are not implementation reports.
 
 Passing an audit only authorizes the next phase.
 After implementation, the phase report, changelog, scripts registry and commit message are mandatory.
+
+«هیچ Phase جدیدی بدون ایجاد Phase Report و ثبت Plan شروع نشود.»
