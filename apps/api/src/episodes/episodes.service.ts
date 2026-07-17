@@ -1,11 +1,12 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { StorageService } from '../storage/storage.service';
 import { CreateEpisodeDto } from './dto/create-episode.dto';
 import { UpdateEpisodeDto } from './dto/update-episode.dto';
 
 @Injectable()
 export class EpisodesService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private storageService: StorageService) {}
 
   async create(userId: string, data: CreateEpisodeDto) {
     const podcast = await this.prisma.podcast.findUnique({ where: { id: data.podcastId } });
@@ -15,6 +16,7 @@ export class EpisodesService {
     if (podcast.ownerId !== userId) {
       throw new ForbiddenException('Access denied');
     }
+
     return this.prisma.episode.create({ data });
   }
 
@@ -42,6 +44,28 @@ export class EpisodesService {
     }
 
     return this.prisma.episode.update({ where: { id }, data });
+  }
+
+  async uploadAudio(id: string, userId: string, file: Express.Multer.File, fileName: string) {
+    const episode = await this.prisma.episode.findUnique({
+      where: { id },
+      include: { podcast: true },
+    });
+
+    if (!episode) {
+      throw new NotFoundException('Episode not found');
+    }
+    if (episode.podcast.ownerId !== userId) {
+      throw new ForbiddenException('Access denied');
+    }
+
+    const key = `episodes/${id}/${Date.now()}-${fileName}`;
+    const audioUrl = await this.storageService.uploadAudio(key, file.buffer, file.mimetype);
+
+    return this.prisma.episode.update({
+      where: { id },
+      data: { audioUrl },
+    });
   }
 
   async remove(id: string, userId: string) {

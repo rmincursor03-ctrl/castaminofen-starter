@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { PodcastsModule } from './podcasts/podcasts.module';
 import { EpisodesModule } from './episodes/episodes.module';
+import { StorageModule } from './storage/storage.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EpisodesModule } from './episodes/episodes.module';
     AuthModule,
     PodcastsModule,
     EpisodesModule,
+    StorageModule,
   ],
   controllers: [],
   providers: [],

@@ -2376,3 +2376,173 @@ Each entry must include:
 
 ### Developer Notes
 - Important technical decisions
+
+# Documentation & Reporting Rules
+
+## Mandatory Phase Documentation
+
+After completing every development phase or sub-phase:
+
+Copilot MUST create or update documentation files.
+
+Required files:
+
+1. Phase Report
+
+Location:
+
+docs/phases/
+
+Format:
+
+phase-{number}-{name}-report.md
+
+
+Example:
+
+docs/phases/phase-2.3-episode-storage-report.md
+
+
+The report MUST include:
+
+- Phase objective
+- Implemented features
+- Architecture decisions
+- Database changes
+- API changes
+- Frontend changes
+- Files created
+- Files modified
+- Dependencies added
+- Commands executed
+- Build/Test/Lint results
+- Known limitations
+- Remaining risks
+- Next recommended phase
+
+
+---
+
+2. Changelog
+
+After every code change:
+
+Update:
+
+docs/development/changelog.md
+
+
+Include:
+
+- Date
+- Phase
+- Summary
+- Changed files
+- Breaking changes (if any)
+
+
+---
+
+3. Script Registry
+
+Every created script, command, migration script,
+automation script, or development utility MUST be registered.
+
+File:
+
+docs/development/scripts.md
+
+
+Each entry must contain:
+
+- Script name
+- Location
+- Purpose
+- Usage example
+- Parameters
+- Created phase
+- Dependencies
+- Notes
+
+
+Example:
+
+
+## prisma:migrate
+
+Location:
+
+package.json
+
+
+Purpose:
+
+Run Prisma database migrations.
+
+
+Usage:
+
+pnpm prisma:migrate
+
+
+Created:
+
+Phase 1
+
+
+Dependencies:
+
+Prisma CLI
+
+
+Notes:
+
+Used only for development database changes.
+
+
+---
+
+4. Commit Message Suggestion
+
+After completing each phase:
+
+Copilot MUST suggest a Git commit message.
+
+Format:
+
+type(scope): short description
+
+
+Example:
+
+feat(episodes): add audio upload storage foundation
+
+
+---
+
+5. Language Rule
+
+All explanations, reports, summaries and progress messages MUST be written in Persian.
+
+Code, filenames, commands and technical identifiers remain in English.
+
+---
+
+6. No Silent Changes
+
+Before modifying code:
+
+Copilot MUST explain:
+
+- What will change
+- Why it is needed
+- Which files will be affected
+
+After changes:
+
+Copilot MUST provide:
+
+- Summary
+- Validation results
+- Documentation updated
+

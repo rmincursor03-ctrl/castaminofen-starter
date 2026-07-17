@@ -16,6 +16,7 @@
 **۳. فاز فعال فعلی**
 - وضعیت: Phase 2.2 تکمیل شد.
 - توضیح: Backend API پادکست اکنون از pagination، جستجو روی عنوان و توضیحات، مرتب‌سازی `newest` و endpoint `GET /api/v1/podcasts/:id/episodes` پشتیبانی می‌کند.
+- وضعیت جدید: Phase 2.3 (Episode API و Audio Storage) تکمیل شد و سند گزارش فاز جدید در `docs/phases/phase-2.3-episode-storage-report.md` ذخیره شده است.
 
 **۴. کارهای انجام‌شده (جزئیات)**
 - اضافه/تنظیم فایل‌های پیکربندی:
@@ -28,6 +29,7 @@
 - ایجاد سند `docs/phase-2-podcast-core-plan.md` برای برنامه‌ریزی Phase 2.
 - شروع Phase 2.1 — Backend Foundation برای مالکیت Podcast و محافظت API.
 - تکمیل Phase 2.1 و همگام‌سازی دیتابیس با migration جدید.
+- تکمیل Phase 2.3 با افزودن endpoint آپلود audio و StorageService.
 
 **۵. کارهای معوق (Pending tasks)**
 - آغاز پیاده‌سازی Backend و Frontend برای Phase 2 پس از تایید.
