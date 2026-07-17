@@ -89,3 +89,10 @@
 - هیچ تغییر در route، URL، API contract، query keys، mutationها یا رفتار runtime مورد انتظار ایجاد نشد.
 - اعتبارسنجی با lint و build وب انجام شد و هر دو با موفقیت گذشتند.
 
+## 14. وضعیت فاز 2.8.2.2
+- فاز 2.8.2.2 — Episode Detail Logic Extraction با موفقیت اجرا شد.
+- منطق کوئری جزئیات اپیزود و جریان آپلود audio به هوک‌های feature-local در [apps/web/src/features/episodes/hooks/useEpisodeDetail.ts](../apps/web/src/features/episodes/hooks/useEpisodeDetail.ts) و [apps/web/src/features/episodes/hooks/useEpisodeAudioUpload.ts](../apps/web/src/features/episodes/hooks/useEpisodeAudioUpload.ts) منتقل شد.
+- route [apps/web/src/app/episodes/[id]/page.tsx](../apps/web/src/app/episodes/[id]/page.tsx) اکنون فقط مسئول composition، params و ارائه‌ی صفحه است و ownership feature را برای orchestration و state محلی حفظ می‌کند.
+- URLها، query keys، API contracts و رفتار UI بدون تغییر باقی ماندند.
+- اعتبارسنجی با lint و build وب انجام شد و هر دو با موفقیت گذشتند.
+
