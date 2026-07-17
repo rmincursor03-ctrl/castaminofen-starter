@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
-import { EmptyState } from '@/components/ui/empty-state';
+import { PageState, type PageStateVariant } from '@/components/ui/page-state';
 
 type RouteLink = {
   href: string;
@@ -12,11 +12,17 @@ export function RoutePlaceholder({
   description,
   badge = 'Route foundation',
   links = [],
+  stateVariant = 'empty',
+  stateTitle,
+  stateDescription,
 }: {
   title: string;
   description: string;
   badge?: string;
   links?: RouteLink[];
+  stateVariant?: PageStateVariant;
+  stateTitle?: string;
+  stateDescription?: string;
 }) {
   return (
     <main className="page-container">
@@ -37,9 +43,10 @@ export function RoutePlaceholder({
           </div>
         ) : null}
 
-        <EmptyState
-          title="ساختار مسیر"
-          description="در این مرحله فقط ترکیب صفحه، عنوان و فضای آماده‌سازی برای مسیرهای آینده نمایش داده می‌شود."
+        <PageState
+          variant={stateVariant}
+          title={stateTitle ?? 'وضعیت صفحه'}
+          description={stateDescription ?? 'این بخش برای نمایش الگوی وضعیت صفحه در مسیرهای آینده آماده شده است.'}
         />
       </Card>
     </main>

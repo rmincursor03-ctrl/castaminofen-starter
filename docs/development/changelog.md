@@ -20,3 +20,4 @@
 | 2026-07-17 | Phase 2.5.3 - Application Shell Foundation | Added reusable AppShell, Header, MobileContainer, and BottomNavigation layout components; integrated shell into root layout; verified build and lint | انجام شده |
 | 2026-07-17 | Phase 2.5.4 - Frontend Infrastructure Foundation | Added shared API client, public env configuration, reusable React Query setup, and shared error handling utilities for the web app; verified build and lint | انجام شده |
 | 2026-07-17 | Phase 2.6.1 - Route & Page Structure Foundation | Added structural placeholder routes for home, search, library, and profile, routed the shell navigation to them, and verified the app build and lint | انجام شده |
+| 2026-07-17 | Phase 2.6.2 - Page States Foundation | Added reusable loading, empty, and error page-state foundations for the web app, integrated them into the existing route placeholders, and verified build and lint | انجام شده |

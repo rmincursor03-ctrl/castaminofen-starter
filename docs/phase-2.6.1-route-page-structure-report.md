@@ -21,7 +21,6 @@ Create a lightweight frontend route and page composition foundation for Castamin
 - Search entry at `/search`
 - Library entry at `/library`
 - Profile entry at `/profile`
-- Additional structural page at `/home` for future-ready route organization
 
 ## Page Composition
 
@@ -33,7 +32,6 @@ Create a lightweight frontend route and page composition foundation for Castamin
 - apps/web/src/components/layout/route-placeholder.tsx
 - apps/web/src/app/search/page.tsx
 - apps/web/src/app/library/page.tsx
-- apps/web/src/app/home/page.tsx
 
 ## Files Modified
 
@@ -55,6 +53,8 @@ Create a lightweight frontend route and page composition foundation for Castamin
 
 ## Scope Compliance Audit
 
+- Route links were added only for structural navigation.
+- No navigation business logic was introduced.
 - No product features were added.
 - No APIs were connected.
 - No business logic was introduced.
