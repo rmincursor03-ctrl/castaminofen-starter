@@ -12,10 +12,6 @@ export class CreateEpisodeDto {
   description?: string;
 
   @IsOptional()
-  @IsString()
-  audioUrl?: string;
-
-  @IsOptional()
   @IsDateString()
   publishedAt?: string;
 }

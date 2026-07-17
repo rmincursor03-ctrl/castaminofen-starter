@@ -2144,6 +2144,38 @@ Never translate technical identifiers.
 
 Maintain professional technical communication in Persian.
 
+# Documentation Persistence Rules
+
+All important project analysis, architecture reviews, phase plans, implementation plans, and completion reports MUST be saved as markdown files inside the docs directory.
+
+Never keep important project decisions only in chat.
+
+Required documentation:
+
+- Phase planning:
+  docs/phase-X-name-plan.md
+
+- Phase completion reports:
+  docs/phase-X-name-report.md
+
+- Architecture decisions:
+  docs/architecture-decisions.md
+
+- Project current status:
+  docs/project-status.md
+
+- Script documentation:
+  docs/scripts.md
+
+After completing every phase:
+
+1. Create or update the related documentation file.
+2. Update project-status.md.
+3. Update changelog if available.
+4. Provide a summary in Persian.
+
+Documentation is the source of truth for project history.
+
 # Development Documentation Rule
 
 No phase is considered complete until its documentation file is updated.
@@ -2231,6 +2263,77 @@ before stopping.
 
 # 90. Script Documentation Rules
 
+Whenever a new script, command, automation task, migration script, seed script, deployment script, or helper script is created:
+
+Update:
+
+docs/development/scripts.md
+
+
+Each script entry must contain:
+
+- Script Name
+- Location
+- Purpose
+- Usage Command
+- Parameters
+- Environment Requirements
+- Created Date
+- Related Phase
+
+
+Example:
+
+## prisma:migrate
+
+Location:
+
+apps/api/package.json
+
+
+Purpose:
+
+Run Prisma database migrations.
+
+
+Usage:
+
+pnpm prisma migrate deploy
+
+
+Related Phase:
+
+Phase 1 Auth
+
+
+---
+
+# Changelog Rules
+
+After every code change:
+
+Update:
+
+docs/development/changelog.md
+
+
+The changelog entry must include:
+
+- Date
+- Phase
+- Summary
+- Changed Files
+- Technical Notes
+
+
+No phase is considered completed until:
+
+- Code changes are done
+- Build passes
+- Lint passes
+- Documentation is updated
+- Changelog is updated  
+
 Every script created in this project MUST be documented.
 
 A script is any executable command defined in:
@@ -2270,3 +2373,379 @@ Never create undocumented scripts.
 Never remove or rename scripts without updating docs/scripts.md.
 
 The scripts documentation is the single source of truth for project commands.
+
+# Git Commit Message Rules
+
+After completing every implementation task or phase step:
+
+The AI MUST provide a recommended git commit message.
+
+Commit message requirements:
+
+Format:
+
+<type>(<scope>): <short description>
+
+Allowed types:
+
+- feat: New functionality
+- fix: Bug fixes
+- refactor: Code restructuring without behavior change
+- perf: Performance improvements
+- docs: Documentation changes
+- test: Adding or updating tests
+- chore: Maintenance tasks
+- security: Security related changes
+
+Rules:
+
+1. Commit messages must be written in English.
+2. Keep the first line under 72 characters.
+3. Use conventional commit style.
+4. Include a short body when changes are significant.
+
+Example:
+
+feat(podcast): add podcast pagination API
+
+Details:
+- Added pagination metadata
+- Added search by title and description
+- Added sorting support
+- Added episode relation endpoint
+
+After every phase completion:
+
+Also provide:
+
+- Suggested commit message
+- Changed files list
+- Migration notes (if database changed)
+- Breaking changes (if any)
+
+# Changelog Rules
+
+After every completed phase or significant implementation:
+
+Update changelog.
+
+Each entry must include:
+
+## [Date] - Phase X.X
+
+### Added
+- New features
+
+### Changed
+- Modified behavior
+
+### Fixed
+- Bug fixes
+
+### Database
+- Migration changes
+
+### Developer Notes
+- Important technical decisions
+
+# Documentation & Reporting Rules
+
+## Phase Implementation Reports
+
+After completing any development phase or sub-phase:
+
+1. Create a dedicated markdown report file.
+
+Location:
+
+docs/phases/
+
+Naming convention:
+
+phase-{number}-{title}-report.md
+
+
+Example:
+
+docs/phases/phase-2.3-episode-storage-report.md
+
+
+The report must include:
+
+- Objective
+- Scope
+- Completed Work
+- Files Changed
+- Database Changes
+- API Changes
+- Frontend Changes (if applicable)
+- Commands Executed
+- Validation Results
+- Known Limitations
+- Next Recommended Step
+
+
+Never provide only a chat summary.
+The report file must be created or updated inside the repository.
+
+---
+
+# Script Documentation Rules
+
+Whenever a new script, command, automation task, migration script, seed script, deployment script, or helper script is created:
+
+Update:
+
+docs/development/scripts.md
+
+
+Each script entry must contain:
+
+- Script Name
+- Location
+- Purpose
+- Usage Command
+- Parameters
+- Environment Requirements
+- Created Date
+- Related Phase
+
+
+Example:
+
+## prisma:migrate
+
+Location:
+
+apps/api/package.json
+
+
+Purpose:
+
+Run Prisma database migrations.
+
+
+Usage:
+
+pnpm prisma migrate deploy
+
+
+Related Phase:
+
+Phase 1 Auth
+
+
+---
+
+# Changelog Rules
+
+After every code change:
+
+Update:
+
+docs/development/changelog.md
+
+
+The changelog entry must include:
+
+- Date
+- Phase
+- Summary
+- Changed Files
+- Technical Notes
+
+
+No phase is considered completed until:
+
+- Code changes are done
+- Build passes
+- Lint passes
+- Documentation is updated
+- Changelog is updated
+
+## Mandatory Phase Documentation
+
+After completing every development phase or sub-phase:
+
+Copilot MUST create or update documentation files.
+
+Required files:
+
+1. Phase Report
+
+Location:
+
+docs/phases/
+
+Format:
+
+phase-{number}-{name}-report.md
+
+
+Example:
+
+docs/phases/phase-2.3-episode-storage-report.md
+
+
+The report MUST include:
+
+- Phase objective
+- Implemented features
+- Architecture decisions
+- Database changes
+- API changes
+- Frontend changes
+- Files created
+- Files modified
+- Dependencies added
+- Commands executed
+- Build/Test/Lint results
+- Known limitations
+- Remaining risks
+- Next recommended phase
+
+
+---
+
+2. Changelog
+
+After every code change:
+
+Update:
+
+docs/development/changelog.md
+
+
+Include:
+
+- Date
+- Phase
+- Summary
+- Changed files
+- Breaking changes (if any)
+
+
+---
+
+3. Script Registry
+
+Every created script, command, migration script,
+automation script, or development utility MUST be registered.
+
+File:
+
+docs/development/scripts.md
+
+
+Each entry must contain:
+
+- Script name
+- Location
+- Purpose
+- Usage example
+- Parameters
+- Created phase
+- Dependencies
+- Notes
+
+
+Example:
+
+
+## prisma:migrate
+
+Location:
+
+package.json
+
+
+Purpose:
+
+Run Prisma database migrations.
+
+
+Usage:
+
+pnpm prisma:migrate
+
+
+Created:
+
+Phase 1
+
+
+Dependencies:
+
+Prisma CLI
+
+
+Notes:
+
+Used only for development database changes.
+
+
+---
+
+4. Commit Message Suggestion
+
+After completing each phase:
+
+Copilot MUST suggest a Git commit message.
+
+Format:
+
+type(scope): short description
+
+
+Example:
+
+feat(episodes): add audio upload storage foundation
+
+
+---
+
+5. Language Rule
+
+All explanations, reports, summaries and progress messages MUST be written in Persian.
+
+Code, filenames, commands and technical identifiers remain in English.
+
+---
+
+6. No Silent Changes
+
+Before modifying code:
+
+Copilot MUST explain:
+
+- What will change
+- Why it is needed
+- Which files will be affected
+
+After changes:
+
+Copilot MUST provide:
+
+- Summary
+- Validation results
+- Documentation updated
+
+
+# Final Response Rules
+
+When completing a task:
+
+The final response must be in Persian.
+
+The response must contain:
+
+1. خلاصه تغییرات
+2. فایل‌های تغییر یافته
+3. دستورات اجرا شده
+4. وضعیت تست/build/lint
+5. فایل documentation created/updated
+6. Next step recommendation
+
+
+Do not output long technical reports only in chat.
+Store detailed reports inside docs/ first.
