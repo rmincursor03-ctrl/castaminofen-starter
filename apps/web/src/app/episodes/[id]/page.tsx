@@ -7,8 +7,7 @@ import { useParams } from 'next/navigation';
 import { getEpisodeById, uploadEpisodeAudio } from '@/lib/episodes';
 import { LoadingState } from '@/components/ui/loading-state';
 import { ErrorState } from '@/components/ui/error-state';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { EpisodeDetailView } from '@/features/episodes/components/EpisodeDetailView';
 
 export default function EpisodeDetailsPage() {
   const params = useParams();
@@ -50,59 +49,15 @@ export default function EpisodeDetailsPage() {
 
   return (
     <ProtectedRoute>
-      <main className="page-container">
-        <section className="card">
-        <div className="header">
-          <div>
-            <h1>{query.data.title}</h1>
-            <p>{query.data.description || 'No description available.'}</p>
-          </div>
-        </div>
-        <div className="field-row">
-          <Card>
-            <p>
-              <strong>Podcast ID:</strong> {query.data.podcastId}
-            </p>
-            <p>
-              <strong>Published At:</strong> {query.data.publishedAt || 'Draft'}
-            </p>
-            <p>
-              <strong>Audio URL:</strong> {query.data.audioUrl || 'Not uploaded'}
-            </p>
-            {query.data.audioUrl ? (
-              <audio className="audio-player" controls src={query.data.audioUrl} />
-            ) : (
-              <p className="form-message">Audio is not available yet.</p>
-            )}
-          </Card>
-          <Card>
-            <h2>Upload Audio</h2>
-            <div className="form-field">
-              <label htmlFor="audioFile" className="form-label">
-                Select audio file
-              </label>
-              <input
-                id="audioFile"
-                type="file"
-                accept="audio/*"
-                onChange={handleFileChange}
-                className="input"
-              />
-              <Button
-                type="button"
-                variant="primary"
-                onClick={handleUpload}
-                disabled={!selectedFile || uploadMutation.isPending}
-              >
-                {uploadMutation.isPending ? 'Uploading...' : 'Upload Audio'}
-              </Button>
-              {uploadMutation.isError && <p className="error-text">{uploadMutation.error?.message ?? 'Upload failed'}</p>}
-              {uploadMutation.isSuccess && <p className="form-message">Audio uploaded successfully.</p>}
-            </div>
-          </Card>
-        </div>
-        </section>
-      </main>
+      <EpisodeDetailView
+        episode={query.data}
+        selectedFile={selectedFile}
+        onFileChange={handleFileChange}
+        onUpload={handleUpload}
+        isUploading={uploadMutation.isPending}
+        uploadError={uploadMutation.isError ? uploadMutation.error?.message ?? 'Upload failed' : null}
+        uploadSuccess={uploadMutation.isSuccess}
+      />
     </ProtectedRoute>
   );
 }

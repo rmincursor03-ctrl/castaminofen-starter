@@ -82,3 +82,10 @@
 - لایه‌ی shared API در [apps/web/src/lib/episodes.ts](../apps/web/src/lib/episodes.ts) بدون تغییر باقی ماند و رفتار runtime، URLها و قرارداد API دست‌نخورده باقی ماند.
 - اعتبارسنجی با lint و build وب انجام شد و هیچ خطایی گزارش نشد.
 
+## 13. وضعیت فاز 2.8.2.1
+- فاز 2.8.2.1 — Episode Detail Presentation Migration با موفقیت اجرا شد.
+- JSX صفحه‌ی جزئیات اپیزود به کامپوننت‌های feature-owned در [apps/web/src/features/episodes/components/EpisodeDetailView.tsx](../apps/web/src/features/episodes/components/EpisodeDetailView.tsx) و [apps/web/src/features/episodes/components/EpisodeAudioUploadCard.tsx](../apps/web/src/features/episodes/components/EpisodeAudioUploadCard.tsx) منتقل شد.
+- route [apps/web/src/app/episodes/[id]/page.tsx](../apps/web/src/app/episodes/[id]/page.tsx) همچنان مالکیت params، React Query، mutation و state انتخاب فایل را حفظ کرد.
+- هیچ تغییر در route، URL، API contract، query keys، mutationها یا رفتار runtime مورد انتظار ایجاد نشد.
+- اعتبارسنجی با lint و build وب انجام شد و هر دو با موفقیت گذشتند.
+
