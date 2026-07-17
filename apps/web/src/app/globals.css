@@ -4,176 +4,169 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: dark;
-  font-family: var(--font-body);
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  :root {
+    font-family: var(--font-body);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    direction: rtl;
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  body {
+    min-height: 100vh;
+    font-family: var(--font-body);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 35%, transparent);
+    color: var(--text-primary);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+
+  p {
+    color: var(--text-secondary);
+  }
 }
 
-html {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-}
+@layer components {
+  .page-container {
+    @apply mx-auto flex w-full max-w-app flex-col px-4 pb-16 pt-6 sm:px-6 lg:px-8;
+  }
 
-html,
-body {
-  margin: 0;
-  min-height: 100%;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-}
+  .header {
+    @apply flex items-center justify-between gap-4 py-4;
+  }
 
-body {
-  min-height: 100vh;
-  font-family: var(--font-body);
-}
+  .toolbar {
+    @apply flex flex-wrap items-center gap-3;
+  }
 
-* {
-  box-sizing: border-box;
-}
+  .card {
+    @apply rounded-xl border border-border bg-surface-secondary p-4 shadow-soft sm:p-6;
+  }
 
-::selection {
-  background: color-mix(in srgb, var(--accent) 35%, transparent);
-  color: var(--text-primary);
-}
+  .grid {
+    display: grid;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  .grid-gap-12 {
+    gap: 1rem;
+  }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
+  .button {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-transparent px-4 py-3 text-sm font-semibold transition duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface-primary disabled:pointer-events-none disabled:opacity-60;
+  }
 
-.page-container {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 2rem 1rem 4rem;
-}
+  .button-primary {
+    @apply bg-accent text-accent-foreground hover:brightness-110;
+  }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 0;
-}
+  .button-secondary {
+    @apply border-border bg-surface-secondary text-text-primary hover:bg-surface-tertiary;
+  }
 
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
+  .button-ghost {
+    @apply bg-transparent text-text-secondary hover:bg-surface-secondary hover:text-text-primary;
+  }
 
-.card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 20px 60px var(--shadow-color);
-}
+  .input,
+  .textarea,
+  .select {
+    @apply w-full min-h-11 appearance-none rounded-xl border border-border bg-surface-primary px-4 py-3 text-sm text-text-primary placeholder:text-text-muted transition focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent disabled:cursor-not-allowed disabled:opacity-60;
+  }
 
-.grid {
-  display: grid;
-}
+  .form-field {
+    @apply flex flex-col gap-2;
+  }
 
-.grid-gap-12 {
-  gap: 1rem;
-}
+  .form-label {
+    @apply text-sm font-medium text-text-primary;
+  }
 
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.9rem 1.2rem;
-  border-radius: 0.85rem;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-  text-decoration: none;
-}
+  .form-message {
+    @apply text-sm text-text-secondary;
+  }
 
-.button:hover,
-.button:focus-visible {
-  transform: translateY(-1px);
-}
+  .error-text {
+    @apply text-sm text-error;
+  }
 
-.button-primary {
-  background: var(--accent);
-  color: #f8fafc;
-}
+  .loading-state,
+  .error-state {
+    @apply rounded-xl border border-border bg-surface-secondary p-4;
+  }
 
-.button-secondary {
-  background: transparent;
-  color: var(--text-secondary);
-  border-color: var(--border);
-}
+  .loading-state {
+    @apply text-text-secondary;
+  }
 
-.input,
-.textarea,
-.select {
-  width: 100%;
-  min-height: 3rem;
-  appearance: none;
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: 0.85rem;
-  color: var(--text-primary);
-  padding: 0.9rem 1rem;
-}
+  .error-state {
+    @apply border border-error bg-surface-secondary text-error;
+  }
 
-.input:focus,
-.textarea:focus,
-.select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
-}
+  .field-row {
+    @apply grid gap-4;
+  }
 
-.form-field {
-  display: grid;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
+  .text-heading {
+    @apply text-lg font-semibold text-text-primary sm:text-xl;
+  }
 
-.form-label {
-  font-weight: 600;
-  color: var(--text-primary);
-}
+  .text-subheading {
+    @apply text-base font-medium text-text-primary;
+  }
 
-.error-text {
-  color: var(--error);
-  font-size: 0.95rem;
-}
+  .text-body {
+    @apply text-sm leading-7 text-text-secondary sm:text-base;
+  }
 
-.loading-state,
-.error-state {
-  padding: 1rem 1.25rem;
-  border-radius: 1rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-}
-
-.loading-state {
-  color: var(--accent);
-}
-
-.error-state {
-  color: var(--error);
-}
-
-.field-row {
-  display: grid;
-  gap: 1rem;
+  .text-caption {
+    @apply text-xs leading-6 text-text-secondary;
+  }
 }
