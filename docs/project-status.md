@@ -56,6 +56,12 @@
 - تکمیل player، offline و playlist در فازهای بعدی.
 - راه‌اندازی CI و تست‌های پایه‌تر برای پایدارتر شدن ریپو.
 
+## 9. وضعیت فاز 2.8.3
+- فاز 2.8.3 — Backend Build Stabilization & Prisma Integrity Audit با موفقیت اجرا شد.
+- مشکل اصلی build بک‌اند به دلیل ناسازگاری Prisma client و typings شناسایی و با بازسازی client برطرف شد.
+- build کلی ریپو و lint با موفقیت تأیید شدند.
+- هیچ تغییر runtime، route یا API contract در این فاز ایجاد نشد.
+
 ## 9. وضعیت فاز 2.7.1
 - فاز 2.7.1 — Auth Feature Boundary Adoption با موفقیت اجرا شد.
 - مرز مالکیت auth در سطح فرانت‌اند به‌صورت تدریجی و بدون تغییر رفتار یا قرارداد API تثبیت شد.
@@ -100,5 +106,11 @@
 - فاز 2.9 — Player Feature Boundary Adoption Plan به‌صورت documentation-only و بدون تغییر runtime اجرا شد.
 - مرز مالکیت آینده برای Player در سطح frontend تحلیل و مستندسازی شد و در [docs/phases/phase-2.9-player-feature-boundary-plan.md](./phases/phase-2.9-player-feature-boundary-plan.md) ثبت گردید.
 - وابستگی‌های فعلی بین Episode و playback infrastructure شناسایی شد و پیش‌نویس ownership boundary برای Player، Episode، shared layer و API/data boundary ترسیم شد.
+- این فاز بدون تغییر route، API contract، dependency یا رفتار runtime انجام شد.
+
+## 16. وضعیت فاز 2.10
+- فاز 2.10 — Player Data Contract Definition Plan به‌صورت documentation-only و بدون تغییر runtime اجرا شد.
+- قرارداد داده‌ی آینده بین Episode و Player در [docs/phases/phase-2.10-player-data-contract-plan.md](./phases/phase-2.10-player-data-contract-plan.md) ثبت شد.
+- نیازهای داده‌ای Player، پیشنهاد قرارداد playable، مرز مالکیت، جهت وابستگی و استراتژی مهاجرت برای فازهای بعدی مستندسازی شدند.
 - این فاز بدون تغییر route، API contract، dependency یا رفتار runtime انجام شد.
 
