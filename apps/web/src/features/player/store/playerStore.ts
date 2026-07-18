@@ -14,7 +14,7 @@ export type PlayerState = {
   error: string | null;
   volume: number;
   repeatMode: PlayerRepeatMode;
-  shuffle: boolean;
+  shuffleEnabled: boolean;
   setCurrentItem: (item: PlayableItem) => void;
   setPlaybackState: (state: Partial<PlayerRuntimeState>) => void;
   replaceQueue: (items: PlayableItem[], startIndex?: number) => void;
@@ -24,6 +24,7 @@ export type PlayerState = {
   togglePlay: () => void;
   setVolume: (volume: number) => void;
   toggleRepeat: () => void;
+  setShuffle: (enabled: boolean) => void;
   toggleShuffle: () => void;
   resetPlayer: () => void;
 };
@@ -43,7 +44,7 @@ export const usePlayerStore = create<PlayerState>((set) => ({
   error: null,
   volume: 0.8,
   repeatMode: 'off',
-  shuffle: false,
+  shuffleEnabled: false,
   setCurrentItem: (item) =>
     set((state) => ({
       ...state,
@@ -114,6 +115,30 @@ export const usePlayerStore = create<PlayerState>((set) => ({
         return state;
       }
 
+      if (state.repeatMode === 'one' && state.currentItem) {
+        nextItem = state.currentItem;
+        return state;
+      }
+
+      if (state.shuffleEnabled) {
+        const availableIndices = state.queue
+          .map((_, index) => index)
+          .filter((index) => index !== state.currentIndex);
+
+        if (!availableIndices.length) {
+          return state;
+        }
+
+        const targetIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)] ?? state.currentIndex;
+        nextItem = state.queue[targetIndex] ?? null;
+
+        return {
+          ...state,
+          currentItem: nextItem,
+          currentIndex: targetIndex,
+        };
+      }
+
       const isAtEnd = state.currentIndex >= state.queue.length - 1;
       const shouldWrap = state.repeatMode === 'queue' && isAtEnd;
 
@@ -168,7 +193,8 @@ export const usePlayerStore = create<PlayerState>((set) => ({
     set((state) => ({
       repeatMode: state.repeatMode === 'off' ? 'one' : state.repeatMode === 'one' ? 'queue' : 'off',
     })),
-  toggleShuffle: () => set((state) => ({ shuffle: !state.shuffle })),
+  setShuffle: (enabled) => set({ shuffleEnabled: enabled }),
+  toggleShuffle: () => set((state) => ({ shuffleEnabled: !state.shuffleEnabled })),
   resetPlayer: () =>
     set({
       currentItem: null,
@@ -183,6 +209,6 @@ export const usePlayerStore = create<PlayerState>((set) => ({
       error: null,
       volume: 0.8,
       repeatMode: 'off',
-      shuffle: false,
+      shuffleEnabled: false,
     }),
 }));

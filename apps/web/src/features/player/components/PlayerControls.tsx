@@ -1,16 +1,16 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Pause, Play, Repeat1, Repeat2, Square } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pause, Play, Repeat1, Repeat2, Shuffle, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePlayerRuntime } from '../hooks/usePlayerRuntime';
 import { usePlayerState } from '../hooks/usePlayerState';
 
 export function PlayerControls() {
   const playerRuntime = usePlayerRuntime();
-  const { currentItem, status, isPlaying, queue, currentIndex, repeatMode, toggleRepeat } = usePlayerState();
+  const { currentItem, status, isPlaying, queue, currentIndex, repeatMode, shuffleEnabled, toggleRepeat, toggleShuffle } = usePlayerState();
 
   const canGoPrevious = currentIndex > 0;
-  const canGoNext = currentIndex >= 0 && queue.length > 0 && (repeatMode === 'queue' || currentIndex < queue.length - 1);
+  const canGoNext = currentIndex >= 0 && queue.length > 0 && (repeatMode === 'queue' || shuffleEnabled || currentIndex < queue.length - 1);
 
   const handleTogglePlayback = async () => {
     if (!currentItem?.audioUrl) {
@@ -68,6 +68,17 @@ export function PlayerControls() {
         aria-label="Stop playback"
       >
         <Square size={14} />
+      </Button>
+      <Button
+        type="button"
+        variant={shuffleEnabled ? 'secondary' : 'ghost'}
+        size="sm"
+        className={`h-10 w-10 rounded-full p-0 ${shuffleEnabled ? 'text-primary' : ''}`}
+        onClick={() => toggleShuffle()}
+        aria-label={`Shuffle ${shuffleEnabled ? 'on' : 'off'}`}
+        aria-pressed={shuffleEnabled}
+      >
+        <Shuffle size={16} />
       </Button>
       <Button
         type="button"

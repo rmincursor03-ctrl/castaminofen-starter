@@ -43,3 +43,29 @@ test('toggleRepeat cycles through off, one, and queue modes', () => {
   usePlayerStore.getState().toggleRepeat();
   assert.equal(usePlayerStore.getState().repeatMode, 'off');
 });
+
+test('goToNext uses shuffle selection without mutating the queue order', () => {
+  const store = usePlayerStore.getState();
+  const items = [createItem('a'), createItem('b'), createItem('c')];
+  const originalRandom = Math.random;
+
+  usePlayerStore.setState({
+    ...store,
+    currentItem: items[2],
+    queue: items,
+    currentIndex: 2,
+    repeatMode: 'off',
+    shuffleEnabled: true,
+  });
+
+  Math.random = () => 0;
+
+  try {
+    const nextItem = usePlayerStore.getState().goToNext();
+    assert.equal(nextItem?.id, 'a');
+  } finally {
+    Math.random = originalRandom;
+  }
+
+  assert.deepEqual(usePlayerStore.getState().queue.map((item) => item.id), ['a', 'b', 'c']);
+});

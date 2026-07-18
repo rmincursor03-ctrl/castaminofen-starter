@@ -184,3 +184,9 @@
 - حالت Repeat در Player Store به‌صورت off/one/queue پیاده‌سازی شد و Runtime Player تصمیم‌گیری پایان پخش را بر اساس این حالت انجام می‌دهد.
 - کنترل Repeat به UI Player اضافه شد و رفتار Repeat One/Queue در سطوح store و runtime تأیید شد.
 - اعتبارسنجی با regression test، lint و build وب انجام شد.
+
+## 21. وضعیت فاز 3.2.2
+- فاز 3.2.2 — Shuffle Mode MVP Implementation با موفقیت اجرا شد.
+- حالت Shuffle در Player Store به‌صورت Player-owned و بدون ایجاد store جدید پیاده‌سازی شد و actionهای setShuffle/toggleShuffle اضافه شدند.
+- انتخاب آیتم بعدی در flow runtime به‌صورت MVP بر اساس Shuffle انجام می‌شود و ترتیب Queue بدون تغییر باقی می‌ماند.
+- دکمه Shuffle به کنترل‌های موجود Player اضافه شد و رفتار آن با regression test، lint و build وب تأیید شد.
