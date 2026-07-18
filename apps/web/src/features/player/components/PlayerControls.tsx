@@ -11,6 +11,7 @@ export function PlayerControls() {
 
   const canGoPrevious = currentIndex > 0;
   const canGoNext = currentIndex >= 0 && queue.length > 0 && (repeatMode === 'queue' || shuffleEnabled || currentIndex < queue.length - 1);
+  const hasPlayableItem = Boolean(currentItem?.audioUrl);
 
   const handleTogglePlayback = async () => {
     if (!currentItem?.audioUrl) {
@@ -42,7 +43,7 @@ export function PlayerControls() {
         size="sm"
         className="h-10 w-10 rounded-full p-0"
         onClick={() => void playerRuntime.previous()}
-        disabled={!canGoPrevious || !currentItem?.audioUrl}
+        disabled={!canGoPrevious || !hasPlayableItem}
         aria-label="Previous item"
       >
         <ChevronLeft size={16} />
@@ -53,10 +54,11 @@ export function PlayerControls() {
         size="sm"
         className="h-10 w-10 rounded-full p-0"
         onClick={() => void handleTogglePlayback()}
-        disabled={!currentItem?.audioUrl}
+        disabled={!hasPlayableItem}
         aria-label={isPlaying ? 'Pause playback' : 'Start playback'}
+        aria-busy={status === 'loading'}
       >
-        {status === 'loading' ? <span className="text-xs">...</span> : isPlaying ? <Pause size={16} /> : <Play size={16} />}
+        {status === 'loading' ? <span className="text-xs font-semibold">...</span> : isPlaying ? <Pause size={16} /> : <Play size={16} />}
       </Button>
       <Button
         type="button"
@@ -64,7 +66,7 @@ export function PlayerControls() {
         size="sm"
         className="h-10 w-10 rounded-full p-0"
         onClick={handleStop}
-        disabled={!currentItem?.audioUrl}
+        disabled={!hasPlayableItem}
         aria-label="Stop playback"
       >
         <Square size={14} />
@@ -97,7 +99,7 @@ export function PlayerControls() {
         size="sm"
         className="h-10 w-10 rounded-full p-0"
         onClick={() => void playerRuntime.next()}
-        disabled={!canGoNext || !currentItem?.audioUrl}
+        disabled={!canGoNext || !hasPlayableItem}
         aria-label="Next item"
       >
         <ChevronRight size={16} />

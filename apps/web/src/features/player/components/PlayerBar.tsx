@@ -7,17 +7,17 @@ import { PlayerVolume } from './PlayerVolume';
 import { usePlayerState } from '../hooks/usePlayerState';
 
 export function PlayerBar() {
-  const { currentItem } = usePlayerState();
-
-  if (!currentItem) {
-    return null;
-  }
+  const { currentItem, status, error } = usePlayerState();
 
   return (
     <div className="rounded-2xl border border-border bg-surface-secondary/95 p-3 shadow-soft backdrop-blur">
       <div className="flex flex-col gap-3 md:flex-row md:items-center">
         <div className="min-w-0 flex-1">
           <PlayerInfo />
+          {!currentItem && !error ? (
+            <p className="mt-1 text-xs text-text-secondary">Select an episode to start listening.</p>
+          ) : null}
+          {status === 'loading' ? <p className="mt-1 text-xs text-text-secondary">Loading playback…</p> : null}
         </div>
         <div className="flex items-center justify-between gap-3 md:justify-center">
           <PlayerControls />

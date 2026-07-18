@@ -3,16 +3,16 @@
 import { usePlayerState } from '../hooks/usePlayerState';
 
 export function PlayerInfo() {
-  const { currentItem, status } = usePlayerState();
+  const { currentItem, status, error } = usePlayerState();
+
+  const title = currentItem?.title ?? 'No active playback';
+  const subtitle = currentItem?.subtitle ?? (status === 'loading' ? 'Preparing audio…' : status === 'idle' ? 'Choose an episode to start listening.' : 'Playback available');
 
   return (
     <div className="min-w-0">
-      <p className="truncate text-sm font-semibold text-text-primary">
-        {currentItem?.title ?? 'No active playback'}
-      </p>
-      <p className="truncate text-xs text-text-secondary">
-        {currentItem?.subtitle ?? (status === 'idle' ? 'Choose an episode to start listening.' : 'Playback available')}
-      </p>
+      <p className="truncate text-sm font-semibold text-text-primary">{title}</p>
+      <p className="truncate text-xs text-text-secondary">{subtitle}</p>
+      {error ? <p className="mt-1 truncate text-xs text-accent">{error}</p> : null}
     </div>
   );
 }

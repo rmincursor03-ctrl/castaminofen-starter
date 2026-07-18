@@ -1,4 +1,4 @@
-import { createBrowserAudioEngine } from './audioEngine';
+import { createBrowserAudioEngine, type AudioEngine } from './audioEngine';
 import type { PlayableItem, PlayerPlaybackStatus } from '../types';
 import type { PlayerState } from '../store/playerStore';
 
@@ -16,8 +16,7 @@ export type PlayerRuntimeController = {
   destroy(): void;
 };
 
-export function createPlayerRuntimeController(store: PlayerState): PlayerRuntimeController {
-  const engine = createBrowserAudioEngine();
+export function createPlayerRuntimeController(store: PlayerState, engine: AudioEngine = createBrowserAudioEngine()): PlayerRuntimeController {
 
   const syncState = (snapshot?: { playbackStatus: PlayerPlaybackStatus; duration: number; currentPosition: number; error: string | null }) => {
     store.setPlaybackState({
@@ -43,6 +42,19 @@ export function createPlayerRuntimeController(store: PlayerState): PlayerRuntime
   };
 
   const playItem = async (item: PlayableItem) => {
+    if (!item.audioUrl) {
+      store.setCurrentItem(item);
+      store.setPlaybackState({
+        currentItem: item,
+        playbackStatus: 'idle',
+        duration: 0,
+        currentPosition: 0,
+        error: 'Audio source is unavailable.',
+      });
+      engine.stop();
+      return;
+    }
+
     store.setCurrentItem(item);
     store.setPlaybackState({
       currentItem: item,
@@ -53,17 +65,39 @@ export function createPlayerRuntimeController(store: PlayerState): PlayerRuntime
     });
 
     engine.load(item.audioUrl);
-    await engine.play();
-    store.setPlaybackState({
-      currentItem: item,
-      playbackStatus: 'playing',
-      duration: engine.getDuration(),
-      currentPosition: engine.getCurrentTime(),
-      error: null,
-    });
+
+    try {
+      await engine.play();
+      store.setPlaybackState({
+        currentItem: item,
+        playbackStatus: 'playing',
+        duration: engine.getDuration(),
+        currentPosition: engine.getCurrentTime(),
+        error: null,
+      });
+    } catch (error) {
+      store.setPlaybackState({
+        currentItem: item,
+        playbackStatus: 'paused',
+        duration: engine.getDuration(),
+        currentPosition: engine.getCurrentTime(),
+        error: 'Unable to start playback.',
+      });
+      throw error;
+    }
   };
 
   const moveToNextQueueItem = async () => {
+    if (!store.queue.length) {
+      stopPlaybackGracefully({
+        playbackStatus: 'idle',
+        duration: engine.getDuration(),
+        currentPosition: engine.getCurrentTime(),
+        error: null,
+      });
+      return;
+    }
+
     if (store.repeatMode === 'one' && store.currentItem) {
       await playItem(store.currentItem);
       return;
@@ -90,6 +124,16 @@ export function createPlayerRuntimeController(store: PlayerState): PlayerRuntime
       return;
     }
 
+    if (snapshot.error) {
+      store.setPlaybackState({
+        playbackStatus: snapshot.playbackStatus,
+        duration: snapshot.duration,
+        currentPosition: snapshot.currentPosition,
+        error: snapshot.error,
+      });
+      return;
+    }
+
     syncState(snapshot);
   });
 
@@ -99,8 +143,29 @@ export function createPlayerRuntimeController(store: PlayerState): PlayerRuntime
       await playItem(item);
     },
     async play() {
-      await engine.play();
-      syncState();
+      if (!store.currentItem?.audioUrl) {
+        store.setPlaybackState({
+          playbackStatus: 'idle',
+          duration: 0,
+          currentPosition: 0,
+          error: store.currentItem ? 'Audio source is unavailable.' : 'No playable item selected.',
+        });
+        engine.stop();
+        return;
+      }
+
+      try {
+        await engine.play();
+        syncState();
+      } catch (error) {
+        store.setPlaybackState({
+          playbackStatus: 'paused',
+          duration: engine.getDuration(),
+          currentPosition: engine.getCurrentTime(),
+          error: 'Unable to start playback.',
+        });
+        throw error;
+      }
     },
     pause() {
       engine.pause();
@@ -122,7 +187,8 @@ export function createPlayerRuntimeController(store: PlayerState): PlayerRuntime
       syncState();
     },
     setCurrentTime(position) {
-      engine.setCurrentTime(position);
+      const safePosition = Number.isFinite(position) ? Math.max(0, position) : 0;
+      engine.setCurrentTime(safePosition);
       syncState();
     },
     async replaceQueue(items, startIndex = 0) {
@@ -160,6 +226,16 @@ export function createPlayerRuntimeController(store: PlayerState): PlayerRuntime
       await moveToNextQueueItem();
     },
     async previous() {
+      if (!store.queue.length) {
+        stopPlaybackGracefully({
+          playbackStatus: 'idle',
+          duration: engine.getDuration(),
+          currentPosition: engine.getCurrentTime(),
+          error: null,
+        });
+        return;
+      }
+
       const previousItem = store.goToPrevious();
 
       if (!previousItem) {

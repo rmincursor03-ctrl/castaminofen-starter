@@ -61,10 +61,14 @@ export const usePlayerStore = create<PlayerState>((set) => ({
     })),
   setPlaybackState: (state) =>
     set((currentState) => {
-      const nextPlaybackStatus = state.playbackStatus ?? currentState.playbackStatus;
-      const nextPosition = state.currentPosition ?? currentState.currentPosition;
-      const nextDuration = state.duration ?? currentState.duration;
-      const nextError = state.error ?? currentState.error;
+      const hasPlaybackStatus = Object.prototype.hasOwnProperty.call(state, 'playbackStatus');
+      const nextPlaybackStatus = hasPlaybackStatus ? state.playbackStatus ?? 'idle' : currentState.playbackStatus;
+      const hasPosition = Object.prototype.hasOwnProperty.call(state, 'currentPosition');
+      const nextPosition = hasPosition ? state.currentPosition ?? 0 : currentState.currentPosition;
+      const hasDuration = Object.prototype.hasOwnProperty.call(state, 'duration');
+      const nextDuration = hasDuration ? state.duration ?? 0 : currentState.duration;
+      const hasError = Object.prototype.hasOwnProperty.call(state, 'error');
+      const nextError = hasError ? (state.error ?? null) : currentState.error;
 
       return {
         ...currentState,

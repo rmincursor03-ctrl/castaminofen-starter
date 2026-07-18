@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { usePlayerStore } from '../store/playerStore.ts';
+import { createPlayerRuntimeController } from './playerRuntime';
+import { usePlayerStore } from '../store/playerStore';
 
 const createItem = (id: string) => ({
   id,
@@ -68,4 +69,77 @@ test('goToNext uses shuffle selection without mutating the queue order', () => {
   }
 
   assert.deepEqual(usePlayerStore.getState().queue.map((item) => item.id), ['a', 'b', 'c']);
+});
+
+test('loadItem reports a clear error when an item has no audio source', async () => {
+  const store = usePlayerStore.getState();
+  const controller = createPlayerRuntimeController(store, {
+    load() {},
+    async play() {},
+    pause() {},
+    stop() {},
+    setVolume() {},
+    setCurrentTime() {},
+    getCurrentTime() { return 0; },
+    getDuration() { return 0; },
+    subscribe() { return () => {}; },
+    destroy() {},
+  });
+
+  usePlayerStore.setState({
+    ...store,
+    currentItem: null,
+    queue: [],
+    currentIndex: -1,
+    playbackStatus: 'idle',
+    status: 'idle',
+    error: null,
+    isPlaying: false,
+  });
+
+  await controller.loadItem({
+    id: 'missing-audio',
+    title: 'Missing audio',
+    sourceType: 'episode',
+  });
+
+  const state = usePlayerStore.getState();
+  assert.equal(state.error, 'Audio source is unavailable.');
+  assert.equal(state.playbackStatus, 'idle');
+  assert.equal(state.currentItem?.id, 'missing-audio');
+  controller.destroy();
+});
+
+test('next stops gracefully when the queue is empty', async () => {
+  const store = usePlayerStore.getState();
+  const controller = createPlayerRuntimeController(store, {
+    load() {},
+    async play() {},
+    pause() {},
+    stop() {},
+    setVolume() {},
+    setCurrentTime() {},
+    getCurrentTime() { return 0; },
+    getDuration() { return 0; },
+    subscribe() { return () => {}; },
+    destroy() {},
+  });
+
+  usePlayerStore.setState({
+    ...store,
+    currentItem: null,
+    queue: [],
+    currentIndex: -1,
+    playbackStatus: 'playing',
+    status: 'playing',
+    error: null,
+    isPlaying: true,
+  });
+
+  await controller.next();
+
+  const state = usePlayerStore.getState();
+  assert.equal(state.playbackStatus, 'idle');
+  assert.equal(state.error, null);
+  controller.destroy();
 });
